@@ -1,23 +1,22 @@
-name: Deploy to FTP
+name: Deploy to Azure App Service
 
 on:
   push:
     branches:
-      - main
+      - main  # Adjust this to your main branch name
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Deploy to FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
-        with:
-          server: ftps://waws-prod-ma1-019.ftp.azurewebsites.windows.net  # Replace with your FTP server URL
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
-          remote-dir: /site/wwwroot
+    - name: Deploy to Azure
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: phpwebsite0023
+        publish-profile: ${{ secrets.AZURE_APP_SERVICE_PUBLISH_PROFILE }}
+        package: ./
+
